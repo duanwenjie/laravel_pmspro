@@ -1,0 +1,16 @@
+# map用例:
+# {"source":'./1/a/',"target":"./2/a/","type":"d"},
+# {"source":'./1/b/tmp.txt',"target":"./2/b/tmp.txt","type":"f"},
+# {"source":"./yks-oms/conf/","target":"./yks-oms/","type":"d"},
+
+# 说明:
+# 每一条map必填且仅允许填3个key,分别是source/target/type,按json格式填写，请注意书写格式和避免中文字符,注释使用"#"符号.
+# source:模板路径里的源文件(目录)，target:实际使用的目标文件(目录)
+# type可以填写两种类型,分别是f和d，f代表文件，填f的条目只会覆盖指定单个文件;d代表目录，填d的条目会把源目录下的所有内容全部复制到目标目录下，同名则覆盖，不同名无影响.
+
+
+[
+
+{"source":"./config_module/config/","target":"./config/","type":"d"},
+
+]

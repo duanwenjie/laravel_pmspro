@@ -1,0 +1,390 @@
+#config fo agent
+motan-agent:
+  port: 10360 # agent serve port.
+  mport: 10361 # agent manage port
+  log_dir: "./agentlogs"
+  registry: "zk-registry" # registry id for registering agent info
+  application: "tms_service_agent" # agent identify. for agent command notify and so on
+
+#config of registries
+motan-registry:
+  zk-registry:
+    protocol: zookeeper
+    address: "192.168.201.211:2181,192.168.201.212:2181,192.168.201.213:2181"
+    registrySessionTimeout: 10000
+    requestTimeout: 5000
+
+#conf of basic refers
+motan-basicRefer:
+  serviceBasicRefer: # basic refer id
+    group: rpc-service-group-dev # group name
+    protocol: motan2 # rpc protocol
+    registry: "zk-registry" # registry id
+    requestTimeout: 100000
+    haStrategy: failover
+    loadbalance: roundrobin
+    serialization: simple
+    filter: "accessLog, myfilter" # filter registed in extFactory
+    retries: 3
+    version: 1.0
+
+#conf of refers
+motan-refer:
+  service-urc-p1:
+    path: com.yks.urc.motan.service.api.IUrcService  # e.g. service name for subscribe
+    registry: "zk-registry"
+    basicRefer: serviceBasicRefer # basic refer id
+  service-urc-p2:
+    path: com.yks.urc.motan.service.api.IUrcMgr # e.g. service name for subscribe
+    registry: "zk-registry"
+    basicRefer: serviceBasicRefer # basic refer id
+
+motan-basicService: # 同server端配置
+  surportBasicService: # basic refer id
+    group: rpc-service-group-dev # group name
+    protocol: motan2 # rpc protocol
+    filter: "accessLog" # 配置filter、
+    registry: "zk-registry"
+    serialization: simple
+    nodeType: server # 节点类型。
+
+#custom ip
+motan-custom-ip:
+  ip: 192.168.201.212
+
+
+#http service -- one path many methods
+http-service:
+  service-motan-pmsproservice01:
+    mrpBaseSkuCoreExportSf:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpBaseSkuCoreExportSf
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpBaseSkuCoreExportSf
+    mrpBaseSkuCoreExportV3:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpBaseSkuCoreExportV3
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpBaseSkuCoreExportV3
+    mrpBaseSkuCoreImportSf:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpBaseSkuCoreImportSf
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpBaseSkuCoreImportSf
+    mrpBaseSkuCoreImportV3:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpBaseSkuCoreImportV3
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpBaseSkuCoreImportV3
+    mrpBaseSkuCoreListSf:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpBaseSkuCoreListSf
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpBaseSkuCoreListSf
+    mrpBaseSkuCoreListV3:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpBaseSkuCoreListV3
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpBaseSkuCoreListV3
+    mrpReportDaySalesCountExport:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportDaySalesCountExport
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportDaySalesCountExport
+    mrpReportDaySalesCountList:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportDaySalesCountList
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportDaySalesCountList
+    mrpReportDaySalesCountSfExport:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportDaySalesCountSfExport
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportDaySalesCountSfExport
+    mrpReportDaySalesCountSfList:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportDaySalesCountSfList
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportDaySalesCountSfList
+    mrpReportOosOrdersDAllV2Export:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOosOrdersDAllV2Export
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOosOrdersDAllV2Export
+    mrpReportOosOrdersDAllV2List:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOosOrdersDAllV2List
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOosOrdersDAllV2List
+    mrpReportOosOrdersDExport:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOosOrdersDExport
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOosOrdersDExport
+    mrpReportOosOrdersDHisV2Export:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOosOrdersDHisV2Export
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOosOrdersDHisV2Export
+    mrpReportOosOrdersDHisV2List:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOosOrdersDHisV2List
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOosOrdersDHisV2List
+    mrpReportOosOrdersDList:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOosOrdersDList
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOosOrdersDList
+    mrpReportOosOrdersDV2Export:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOosOrdersDV2Export
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOosOrdersDV2Export
+    mrpReportOosOrdersDV2List:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOosOrdersDV2List
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOosOrdersDV2List
+    mrpReportOosOrdersDetailDailyExport:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOosOrdersDetailDailyExport
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOosOrdersDetailDailyExport
+    mrpReportOosOrdersDetailDailyList:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOosOrdersDetailDailyList
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOosOrdersDetailDailyList
+    mrpReportOosOrdersDetailTotalExport:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOosOrdersDetailTotalExport
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOosOrdersDetailTotalExport
+    mrpReportOosOrdersDetailTotalList:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOosOrdersDetailTotalList
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOosOrdersDetailTotalList
+    mrpReportOosOrdersMExport:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOosOrdersMExport
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOosOrdersMExport
+    mrpReportOosOrdersMList:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOosOrdersMList
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOosOrdersMList
+    mrpReportOosOrdersWExport:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOosOrdersWExport
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOosOrdersWExport
+    mrpReportOosOrdersWList:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOosOrdersWList
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOosOrdersWList
+    mrpReportOrdersModAftV3Export:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOrdersModAftV3Export
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOrdersModAftV3Export
+    mrpReportOrdersModAftV3List:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOrdersModAftV3List
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOrdersModAftV3List
+    mrpReportOrdersModBefDetailV3Export:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOrdersModBefDetailV3Export
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOrdersModBefDetailV3Export
+    mrpReportOrdersModBefDetailV3List:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOrdersModBefDetailV3List
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOrdersModBefDetailV3List
+    mrpReportOrdersModBefV3Export:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOrdersModBefV3Export
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOrdersModBefV3Export
+    mrpReportOrdersModBefV3List:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOrdersModBefV3List
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOrdersModBefV3List
+    mrpReportOrdersSfExport:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOrdersSfExport
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOrdersSfExport
+    mrpReportOrdersSfList:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOrdersSfList
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOrdersSfList
+    mrpReportOrigSalesdataDetailV3Export:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOrigSalesdataDetailV3Export
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOrigSalesdataDetailV3Export
+    mrpReportOrigSalesdataDetailV3List:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOrigSalesdataDetailV3List
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOrigSalesdataDetailV3List
+    mrpReportOrigSalesdataDetailV3NewExport:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOrigSalesdataDetailV3NewExport
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOrigSalesdataDetailV3NewExport
+    mrpReportOrigSalesdataDetailV3NewList:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOrigSalesdataDetailV3NewList
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOrigSalesdataDetailV3NewList
+    mrpReportOrigSalesdataModDetailV3Export:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOrigSalesdataModDetailV3Export
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOrigSalesdataModDetailV3Export
+    mrpReportOrigSalesdataModDetailV3List:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOrigSalesdataModDetailV3List
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOrigSalesdataModDetailV3List
+    mrpReportOrigSalesdataModV3Export:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOrigSalesdataModV3Export
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOrigSalesdataModV3Export
+    mrpReportOrigSalesdataModV3List:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOrigSalesdataModV3List
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOrigSalesdataModV3List
+    mrpReportOrigSalesdataSfExport:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOrigSalesdataSfExport
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOrigSalesdataSfExport
+    mrpReportOrigSalesdataSfList:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOrigSalesdataSfList
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOrigSalesdataSfList
+    mrpReportOrigSalesdataV3Export:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOrigSalesdataV3Export
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOrigSalesdataV3Export
+    mrpReportOrigSalesdataV3List:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportOrigSalesdataV3List
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportOrigSalesdataV3List
+    mrpReportSalesCountPlatformAllExport:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportSalesCountPlatformAllExport
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportSalesCountPlatformAllExport
+    mrpReportSalesCountPlatformAllList:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportSalesCountPlatformAllList
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportSalesCountPlatformAllList
+    mrpReportSalesCountPlatformExport:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportSalesCountPlatformExport
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportSalesCountPlatformExport
+    mrpReportSalesCountPlatformList:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportSalesCountPlatformList
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportSalesCountPlatformList
+    mrpReportSalesCountSkuDetailExport:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportSalesCountSkuDetailExport
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportSalesCountSkuDetailExport
+    mrpReportSalesCountSkuDetailList:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportSalesCountSkuDetailList
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportSalesCountSkuDetailList
+    mrpReportSalesCountSkuExport:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportSalesCountSkuExport
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportSalesCountSkuExport
+    mrpReportSalesCountSkuList:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportSalesCountSkuList
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportSalesCountSkuList
+    mrpReportStockCountSfExport:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportStockCountSfExport
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportStockCountSfExport
+    mrpReportStockCountSfList:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportStockCountSfList
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportStockCountSfList
+    mrpReportStockCountV3Export:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportStockCountV3Export
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportStockCountV3Export
+    mrpReportStockCountV3List:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpReportStockCountV3List
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpReportStockCountV3List
+    mrpResultPlanSfExport:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpResultPlanSfExport
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpResultPlanSfExport
+    mrpResultPlanSfList:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpResultPlanSfList
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpResultPlanSfList
+    mrpResultPlanV3Export:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpResultPlanV3Export
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpResultPlanV3Export
+    mrpResultPlanV3List:
+      #前端url:http://host/pmsproservice/api/Mrp/mrpResultPlanV3List
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Mrp/mrpResultPlanV3List
+
+  service-motan-pmsproservice02:
+    list:
+      #前端url:http://host/pmsproservice/api/PrUpload/list
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/PrUpload/list
+    exportList:
+      #前端url:http://host/pmsproservice/api/PrUpload/exportList
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/PrUpload/exportList
+    import:
+      #前端url:http://host/pmsproservice/api/PrUpload/import
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/PrUpload/import
+    save:
+      #前端url:http://host/pmsproservice/api/PrUpload/save
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/PrUpload/save
+    cancel:
+      #前端url:http://host/pmsproservice/api/PrUpload/cancel
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/PrUpload/cancel
+    followList:
+      #前端url:http://host/pmsproservice/api/PrUpload/followList
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/PrUpload/followList
+    followExportList:
+      #前端url:http://host/pmsproservice/api/PrUpload/followExportList
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/PrUpload/followExportList
+    updateError:
+      #前端url:http://host/pmsproservice/api/PrUpload/updateError
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/PrUpload/updateError
+    importSave:
+      #前端url:http://host/pmsproservice/api/PrUpload/importSave
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/PrUpload/importSave
+
+  service-motan-pmsproservice03:
+    dict:
+      #前端url:http://host/pmsproservice/api/Common/dict
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Common/dict
+
+  service-motan-pmsproservice04:
+    importExportList:
+      #前端url:http://host/pmsproservice/api/User/importExportList
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/User/importExportList
+
+  service-motan-pmsproservice05:
+    getOrderLists:
+      #前端url:http://host/pmsproservice/api/Cancelpo/getOrderLists
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Cancelpo/getOrderLists
+    exportOrderLists:
+      #前端url:http://host/pmsproservice/api/Cancelpo/exportOrderLists
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Cancelpo/exportOrderLists
+    operateOrderLists:
+      #前端url:http://host/pmsproservice/api/Cancelpo/operateOrderLists
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Cancelpo/operateOrderLists
+    uploadDetaillResultLists:
+      #前端url:http://host/pmsproservice/api/Cancelpo/uploadDetaillResultLists
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Cancelpo/uploadDetaillResultLists
+    getDetaillResultLists:
+      #前端url:http://host/pmsproservice/api/Cancelpo/getDetaillResultLists
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Cancelpo/getDetaillResultLists
+    exportDetaillResultLists:
+      #前端url:http://host/pmsproservice/api/Cancelpo/exportDetaillResultLists
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Cancelpo/exportDetaillResultLists
+    getTotalResultLists:
+      #前端url:http://host/pmsproservice/api/Cancelpo/getTotalResultLists
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Cancelpo/getTotalResultLists
+    exportTotalResultLists:
+      #前端url:http://host/pmsproservice/api/Cancelpo/exportTotalResultLists
+      HTTP_REQUEST_METHOD: POST
+      URL_FORMAT: http://127.0.0.1/api/Cancelpo/exportTotalResultLists

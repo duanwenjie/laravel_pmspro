@@ -1,0 +1,41 @@
+motan-custom-service:
+  service-motan-pmsproservice01:
+    #前端url: 移动至agentdemo.yaml
+    path: com.yks.pmsproservice.api.Mrp # e.g. service name for subscribe
+    basicRefer: surportBasicService
+    export: "motan2:10362"
+    provider: http
+    HTTP_CONTENT_TYPE: application/json
+    requestTimeout: 30000
+  service-motan-pmsproservice02:
+    #前端url: 移动至agentdemo.yaml
+    path: com.yks.pmsproservice.api.PrUpload # e.g. service name for subscribe
+    basicRefer: surportBasicService
+    export: "motan2:10362"
+    provider: http
+    HTTP_CONTENT_TYPE: application/json
+    requestTimeout: 30000
+  service-motan-pmsproservice03:
+    #前端url: 移动至agentdemo.yaml
+    path: com.yks.pmsproservice.api.Common # e.g. service name for subscribe
+    basicRefer: surportBasicService
+    export: "motan2:10362"
+    provider: http
+    HTTP_CONTENT_TYPE: application/json
+    requestTimeout: 30000
+  service-motan-pmsproservice04:
+    #前端url: 移动至agentdemo.yaml
+    path: com.yks.pmsproservice.api.User # e.g. service name for subscribe
+    basicRefer: surportBasicService
+    export: "motan2:10362"
+    provider: http
+    HTTP_CONTENT_TYPE: application/json
+    requestTimeout: 30000
+  service-motan-pmsproservice05:
+    #前端url: 移动至agentdemo.yaml
+    path: com.yks.pmsproservice.api.Cancelpo # e.g. service name for subscribe
+    basicRefer: surportBasicService
+    export: "motan2:10362"
+    provider: http
+    HTTP_CONTENT_TYPE: application/json
+    requestTimeout: 30000

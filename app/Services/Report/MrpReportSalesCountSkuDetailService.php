@@ -1,0 +1,124 @@
+<?php
+
+
+namespace App\Services\Report;
+
+use App\Exceptions\InvalidRequestException;
+use App\Exports\Mrp\MrpReportSalesCountSkuDetailExport;
+use App\ModelFilters\Mrp\MrpReportSalesCountSkuDetailFilter;
+use App\Models\Mrp\MrpReportSalesCountSkuDetail;
+use App\Models\UserImportExportRecord;
+use App\Tools\Client\YksFileSystem;
+use Carbon\Carbon;
+use League\Csv\Writer;
+use Maatwebsite\Excel\Facades\Excel;
+
+/*MRP(国内)-》MRP V3-》销量-SKU明细*/
+
+class MrpReportSalesCountSkuDetailService
+{
+    protected $downloadLimitRows = 100000;
+
+    /**
+     * 列表
+     * @return mixed
+     */
+    public function list()
+    {
+        return $this->builder()->paginate(request()->input('perPage'));
+    }
+
+    /**
+     * 列表
+     * @return mixed
+     * @throws InvalidRequestException
+     */
+    public function export($requestParam)
+    {
+         ini_set('memory_limit', '4096M');
+        /*$builder = $this->builder();
+        if ($builder->count() > $this->downloadLimitRows) {
+            throw new InvalidRequestException("导出记录数超{$this->downloadLimitRows}条请筛选条件");
+        }
+        $fileName = date('YmdHis').'_'."销量-SKU明细.csv";
+        Excel::store(
+            new MrpReportSalesCountSkuDetailExport($builder),
+            $fileName,
+            'export',
+            \Maatwebsite\Excel\Excel::CSV
+        );
+        return YksFileSystem::upload($fileName);*/
+        $importExportRecord = $requestParam['import_export_record'];
+        $requestData = $requestParam['data'] ?? [];
+        $fileName = date('YmdHis').'_'."销量-SKU明细.csv";
+        $builder = $this->builder($requestData);
+        $filePath = file_save_path($fileName);
+        $writer = Writer::createFromPath($filePath, 'w+');
+        $header = [
+            '序号',
+            'SKU',
+            '销售状态',
+            '7天销量',
+            '14天销量',
+            '30天销量',
+            '60天销量',
+            '90天销量',
+            '180天销量',
+            '统计时间',
+            ];
+        $writer->insertOne($header);
+        $builder->chunkById(3000, function ($list) use (&$writer) {
+            $formatData = [];
+            foreach ($list as $report) {
+                $formatData[] = [
+                    $report->id,
+                    $report->orders_sku,
+                    $report->sales_status,
+                    $report->days_pcs7,
+                    $report->days_pcs14,
+                    $report->days_pcs30,
+                    $report->days_pcs60,
+                    $report->days_pcs90,
+                    $report->days_pcs180,
+                    $report->updated_at,
+                ];
+            }
+            $writer->insertAll($formatData);
+        });
+        $importExportRecord->update(
+            [
+                'status'            => UserImportExportRecord::STATUS_SUCCESS,
+                'file_download_url' => YksFileSystem::upload($fileName),
+                'completed_at'      => Carbon::now(),
+                'result'            => '处理成功'
+            ]
+        );
+
+    }
+
+    /**
+     * 获取前端查询条件
+     * @return mixed
+     */
+    private function builder($requestData = [])
+    {
+        if (!$requestData) {
+            $requestData = request()->input('data', []);
+        }
+        return MrpReportSalesCountSkuDetail::query()
+            ->select(
+                "id",
+                "orders_sku",
+                "sales_status",
+                "days_pcs7",
+                "days_pcs14",
+                "days_pcs30",
+                "days_pcs60",
+                "days_pcs90",
+                "days_pcs180",
+                "updated_at"
+            )
+            ->filter($requestData, MrpReportSalesCountSkuDetailFilter::class)
+            ->orderByDesc('id');
+    }
+}
